@@ -92,4 +92,10 @@ class CollectionAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         return super().get_queryset(request).annotate(product_count=Count('product'))
+    
+
+@admin.register(models.Review)
+class ReviwAdmin(admin.ModelAdmin):
+    list_display=['id','product','name','message']
+
 

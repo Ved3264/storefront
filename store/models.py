@@ -1,3 +1,4 @@
+from uuid import uuid4
 from django.db import models
 
 
@@ -25,6 +26,12 @@ class Product(models.Model):
 
     def __str__(self):
         return self.title
+    
+class Review(models.Model):
+    product = models.ForeignKey(Product,on_delete=models.CASCADE)
+    name = models.CharField(max_length=255)
+    message = models.TextField()
+    
 
 class Customer(models.Model):
     MEMBERSHIP_BRONZ='B'
@@ -76,11 +83,15 @@ class Address(models.Model):
 
 
 class Cart(models.Model):
+    id = models.UUIDField(primary_key=True,default=uuid4)
     created_at = models.DateTimeField(auto_now_add=True)
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart,on_delete=models.CASCADE)
     product = models.ForeignKey(Product,on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField()
+
+    class Meta:
+        unique_together=['cart','product']
 
 
